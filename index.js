@@ -13,8 +13,6 @@ var autorecordmic = function( settings, callback ) {
 		s.quietDuration = s.quietDuration || 1000;
 
 		this.mic = recordmic( this.s, this.onMicInit.bind( this, callback ) );
-		this.onMicAudioData = this.mic.onAudioData.bind( this.mic );
-		this.mic.onAudioData = this.onAudioData.bind( this );
 	} else {
 
 		callback( new Error( 'this browser is not supported' ) );
@@ -109,8 +107,6 @@ autorecordmic.prototype = {
 					this.silenceStartTime = undefined;
 				//if we're recording then we should check for silence
 				} else if( this.isRecording ) {
-
-					// console.log( avg - this.tAverage );
 
 					if( this.silenceStartTime ) {
 
