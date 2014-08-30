@@ -38,7 +38,7 @@ autorecordmic.prototype = {
 		}
 
 		this.context = this.mic.context,
-		// this.audioInput = this.mic.audioInput;
+		this.audioInput = this.mic.audioInput;
 
 		this.analyzer = this.context.createAnalyser();
 		this.analyzer.fftSize = this.s.bufferSize;
@@ -51,7 +51,7 @@ autorecordmic.prototype = {
 
 		window.automic_onaudioprocess = this.analyzerTicker.onaudioprocess = this.onAudioData.bind( this );
 
-		audioInput.connect( this.analyzer );
+		this.audioInput.connect( this.analyzer );
 		this.analyzer.connect( this.analyzerTicker );
 		this.analyzerTicker.connect( this.context.destination );
 
@@ -59,8 +59,6 @@ autorecordmic.prototype = {
 	},
 
 	onAudioData: function( ev ) {
-
-		console.log( 'here' );
 
 		var data =  new Uint8Array( this.analyzer.frequencyBinCount ),
 			avg = 0;
