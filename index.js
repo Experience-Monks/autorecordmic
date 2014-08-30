@@ -55,7 +55,8 @@ autorecordmic.prototype = {
 		this.analyzer.connect( this.analyzerTicker );
 		this.analyzerTicker.connect( this.context.destination );
 
-		callback( undefined, this );
+		if( callback )
+			callback( undefined, this );
 	},
 
 	onAudioData: function( ev ) {
