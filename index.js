@@ -19,7 +19,7 @@ var autorecordmic = function( settings, callback ) {
 	}
 };
 
-autorecordmic.isAvailable = Boolean( AnalyserNode );
+autorecordmic.isAvailable = typeof AnalyserNode !== 'undefined';
 
 autorecordmic.prototype = {
 
