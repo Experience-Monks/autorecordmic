@@ -25,6 +25,6 @@
   },
   "homepage": "https://github.com/Jam3/autorecordmic",
   "dependencies": {
-    "recordmic": "0.0.3"
+    "recordmic": "0.0.4"
   }
 }
