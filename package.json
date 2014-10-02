@@ -1,6 +1,6 @@
 {
   "name": "autorecordmic",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Record microphone data via getUsermedia automatically based on microphone activity",
   "main": "index.js",
   "scripts": {
@@ -25,6 +25,6 @@
   },
   "homepage": "https://github.com/Jam3/autorecordmic",
   "dependencies": {
-    "recordmic": "0.0.5"
+    "recordmic": "0.0.6"
   }
 }

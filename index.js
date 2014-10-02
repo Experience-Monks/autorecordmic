@@ -26,6 +26,7 @@ autorecordmic.prototype = {
 	listen: function() {
 
 		this.isListening = true;
+		this.mic.start();
 	},
 
 	onMicInit: function( callback, err ) {
@@ -97,8 +98,10 @@ autorecordmic.prototype = {
 
 					if( !this.isRecording ) {
 
+						this.recordingStartIndex = this.mic.getMonoData('left').length;
 						this.isRecording = true;
-						this.mic.start();
+						// this.mic.start();
+
 
 						if( this.s.onRecordStart )
 							this.s.onRecordStart();
@@ -143,6 +146,13 @@ autorecordmic.prototype = {
 
 			this.samples.push( avg );
 		}
+	},
+
+	getData: function() {
+		var data = this.mic.getMonoData('left');
+		var start = Math.max(0,this.recordingStartIndex-22050);
+		var end = data.length-66150;
+		return data.subarray(start,end);
 	}
 };
 
