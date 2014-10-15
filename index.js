@@ -11,6 +11,7 @@ var autorecordmic = function( settings, callback ) {
 		s.averageDuration = s.averageDuration || 3000;
 		s.recordStartLevel = s.recordStartLevel || 10;
 		s.quietDuration = s.quietDuration || 1000;
+		s.maxDuration = s.maxDuration || 6000;
 
 		this.mic = recordmic( this.s, this.onMicInit.bind( this, callback ) );
 	} else {
@@ -24,9 +25,15 @@ autorecordmic.isAvailable = typeof AnalyserNode !== 'undefined';
 autorecordmic.prototype = {
 
 	listen: function() {
-
 		this.isListening = true;
 		this.mic.start();
+	},
+
+	stop: function() {
+		this.reachedMaxSamples = true;
+		this.isListening = false;
+		this.isRecording = false;
+		this.mic.stop();
 	},
 
 	onMicInit: function( callback, err ) {
@@ -59,7 +66,6 @@ autorecordmic.prototype = {
 	},
 
 	onAudioData: function( ev ) {
-
 		var data =  new Uint8Array( this.analyzer.frequencyBinCount ),
 			avg = 0;
 
@@ -91,6 +97,7 @@ autorecordmic.prototype = {
 					this.s.onSampleFinished();
 			}
 
+
 			if( this.isListening ) {
 
 				//if the activity is higher than the average and startLevel then start recording audio
@@ -112,8 +119,8 @@ autorecordmic.prototype = {
 				} else if( this.isRecording ) {
 
 					if( this.silenceStartTime ) {
-
-						if( Date.now() - this.silenceStartTime > this.s.quietDuration ) {
+						var time = Date.now() - this.silenceStartTime 
+						if( time > this.s.quietDuration || time > this.s.maxDuration ) {
 
 							this.isListening = false;
 							this.isRecording = false;
