@@ -150,7 +150,7 @@ autorecordmic.prototype = {
 	 * And if mono is set to 'left':
 	 * ```[ left_data1, left_data1, left_data2, left_data2, left_data3, left_data3 ]```
 	 * 
-	 * @param  {String} mono If you'd like to get mono data interleaved as stereo data either pass 'left' or 'right'
+	 * @param  {String} [mono] If you'd like to get mono data interleaved as stereo data either pass 'left' or 'right'
 	 * @return {Float32Array} Sound data interleaved as a Float32Array.
 	 */
 	getStereoData: function( mono ) {
