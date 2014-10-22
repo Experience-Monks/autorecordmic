@@ -38,6 +38,7 @@ relatively quiet environment. Although it may work quite well in moderate
 situations.
 
 When you instantiate autorecordmic you can pass the following settings:
+```javascript
 {
 	averageDuration: 3000, // how many milliseconds should we listen to silence 
 						   // for default is 3000 milliseconds
@@ -56,6 +57,7 @@ When you instantiate autorecordmic you can pass the following settings:
  onRecordStop: null // This callback will be called once recording has stopped
  				   // due to silence
 }
+```
 
 **Params**
 
