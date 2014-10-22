@@ -29,6 +29,19 @@ var recordmic = require( 'recordmic' );
  * 						 // autorecordmic begins recording data
  *  onRecordStop: null // This callback will be called once recording has stopped
  *  				   // due to silence
+ *
+ *
+ *  /////////////// THE FOLLOWING ARE SETTINGS FOR recordmic ///////////////
+ * 	volume: 1, // this is the volume at which the mic will record by default 
+ * 			   // this value is 1
+ * 	bufferSize: 2048, // this is the size of the buffer as its recording. 
+ * 					  // Default is 2048
+ * 	mono: false // whether the mic will record in mono by default this value 
+ * 				// is false (it will record in stereo) mono can also be 'left' 
+ * 				// or 'right' to define which channel is being used.
+ * 	onSampleData: null // this is a callback if you want to access sampledata 
+ * 					   // as it's being recorded. You can for instance modify 
+ * 					   // data as it's being recorded.
  * }
  * ```
  * 
