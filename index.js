@@ -122,7 +122,13 @@ autorecordmic.prototype = {
 	 */
 	getChannelData: function() {
 
-		return this.mic.getChannelData();
+		var rVal = this.mic.getChannelData();
+
+		// trim out silence
+		rVal.left = rVal.left.subarray( 0, this.silenceStartLength );
+		rVal.right = rVal.right.subarray( 0, this.silenceStartLength );
+
+		return rVal;
 	},
 
 	/**
@@ -135,7 +141,7 @@ autorecordmic.prototype = {
 	 */
 	getMonoData: function( mono ) {
 
-		return this.mic.getMonoData( mono );
+		return this.mic.getMonoData( mono ).subarray( 0, this.silenceStartLength );
 	},
 
 	/**
@@ -155,7 +161,7 @@ autorecordmic.prototype = {
 	 */
 	getStereoData: function( mono ) {
 
-		return this.mic.getStereoData( mono );
+		return this.mic.getStereoData( mono ).subarray( 0, this.silenceStartLength * 2 );
 	},
 
 	onMicInit: function( callback, err ) {
@@ -234,6 +240,7 @@ autorecordmic.prototype = {
 							this.s.onRecordStart();
 					}
 
+					this.silenceStartLength = 0;
 					this.silenceStartTime = undefined;
 				//if we're recording then we should check for silence
 				} else if( this.isRecording ) {
@@ -252,6 +259,7 @@ autorecordmic.prototype = {
 						}
 					} else {
 
+						this.silenceStartLength = this.mic.getMonoData().length;
 						this.silenceStartTime = Date.now();
 					}
 				}
