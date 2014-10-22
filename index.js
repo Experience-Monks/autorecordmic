@@ -83,6 +83,8 @@ autorecordmic.prototype = {
 	 */
 	listen: function() {
 		this.isListening = true;
+
+		this.mic.clear(); // clear out any data which may have been recorded
 		this.mic.start();
 	},
 
@@ -96,11 +98,51 @@ autorecordmic.prototype = {
 		this.mic.stop();
 	},
 
-	getData: function() {
-		var data = this.mic.getMonoData('left');
-		var start = Math.max(0,this.recordingStartIndex-22050);
-		var end = data.length-66150;
-		return data.subarray(start,end);
+	/**
+	 * getChannelData will return return both left and right channel data from our recording.
+	 * If we're recording in mono one of the channels will be null.
+	 *
+	 * The data returned for each channel are Float32Array arrays.
+	 * 
+	 * @return {Object} This object will have two variables 'left' and 'right' which 
+	 *                  contain the data for each channel.
+	 */
+	getChannelData: function() {
+
+		return this.mic.getChannelData();
+	},
+
+	/**
+	 * This will return mono data for our recording. What is returned is a Float32Array.
+	 * The mono setting will determine which array will be returned. If mono is set to true
+	 * then the left channel will be returned over the right.
+	 * 
+	 * @param  {String} [mono] This is optional. either 'left' or 'right' to determine which channel will be returned.
+	 * @return {Float32Array} The sound data for our recording as mono
+	 */
+	getMonoData: function( mono ) {
+
+		return this.mic.getMonoData( mono );
+	},
+
+	/**
+	 * getStereoData will return both the left and right channel interleaved as a Float32Array.
+	 *
+	 * You can also pass in a value for mono. If you do then one of the channells will be interleaved as
+	 * stereo data.
+	 *
+	 * So for instance in stereo:
+	 * ```[ left_data1, right_data1, left_data2, right_data2, left_data3, right_data3 ]```
+	 *
+	 * And if mono is set to 'left':
+	 * ```[ left_data1, left_data1, left_data2, left_data2, left_data3, left_data3 ]```
+	 * 
+	 * @param  {String} mono If you'd like to get mono data interleaved as stereo data either pass 'left' or 'right'
+	 * @return {Float32Array} Sound data interleaved as a Float32Array.
+	 */
+	getStereoData: function( mono ) {
+
+		return this.mic.getStereoData( mono );
 	},
 
 	onMicInit: function( callback, err ) {
@@ -172,10 +214,8 @@ autorecordmic.prototype = {
 
 					if( !this.isRecording ) {
 
-						this.recordingStartIndex = this.mic.getMonoData('left').length;
 						this.isRecording = true;
-						// this.mic.start();
-
+						this.mic.start();
 
 						if( this.s.onRecordStart )
 							this.s.onRecordStart();
@@ -186,7 +226,7 @@ autorecordmic.prototype = {
 				} else if( this.isRecording ) {
 
 					if( this.silenceStartTime ) {
-						var time = Date.now() - this.silenceStartTime 
+						var time = Date.now() - this.silenceStartTime;
 						if( time > this.s.quietDuration || time > this.s.maxDuration ) {
 
 							this.isListening = false;

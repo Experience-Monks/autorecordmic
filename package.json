@@ -26,5 +26,9 @@
   "homepage": "https://github.com/Jam3/autorecordmic",
   "dependencies": {
     "recordmic": "0.0.6"
+  },
+  "devDependencies": {
+    "browsersavefile": "0.0.1",
+    "wavencoder": "0.0.3"
   }
 }

@@ -1,4 +1,14 @@
-var autorecordmic = require( '../index' );
+var autorecordmic = require( '../index' ),
+	wavencoder = require( 'wavencoder' ),
+	browsersavefile = require( 'browsersavefile' );
+
+wavencoder = wavencoder( {
+
+	noWorker: true
+});
+
+wavencoder.init();
+
 
 window.onload = function() {
 
@@ -18,7 +28,16 @@ window.onload = function() {
 
 			console.log( 'stopped recording' );
 
-			mic.listen();
+			wavencoder.setInterleaved( mic.getStereoData() );
+
+			wavencoder.exportWAV( function( data ) {
+
+				console.log( data );
+
+				browsersavefile( 'output.wav', data );
+			});
+
+			// mic.listen();
 		}
 	}, function( err ) {
 
