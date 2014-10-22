@@ -11,7 +11,7 @@
     * [autorecordmic.stop()](#module_autorecordmic..autorecordmic#stop)
     * [autorecordmic.getChannelData()](#module_autorecordmic..autorecordmic#getChannelData)
     * [autorecordmic.getMonoData([mono])](#module_autorecordmic..autorecordmic#getMonoData)
-    * [autorecordmic.getStereoData(mono)](#module_autorecordmic..autorecordmic#getStereoData)
+    * [autorecordmic.getStereoData([mono])](#module_autorecordmic..autorecordmic#getStereoData)
 
 <a name="module_autorecordmic..isAvailable"></a>
 ##autorecordmic~isAvailable
@@ -31,7 +31,7 @@ autorecordmic to be able to record the browser must have AnalyserNode, getUserMe
   * [autorecordmic.stop()](#module_autorecordmic..autorecordmic#stop)
   * [autorecordmic.getChannelData()](#module_autorecordmic..autorecordmic#getChannelData)
   * [autorecordmic.getMonoData([mono])](#module_autorecordmic..autorecordmic#getMonoData)
-  * [autorecordmic.getStereoData(mono)](#module_autorecordmic..autorecordmic#getStereoData)
+  * [autorecordmic.getStereoData([mono])](#module_autorecordmic..autorecordmic#getStereoData)
 
 <a name="new_module_autorecordmic..autorecordmic"></a>
 ###new autorecordmic~autorecordmic(settings, callback)
@@ -125,7 +125,7 @@ then the left channel will be returned over the right.
 
 **Returns**: `Float32Array` - The sound data for our recording as mono  
 <a name="module_autorecordmic..autorecordmic#getStereoData"></a>
-###autorecordmic.getStereoData(mono)
+###autorecordmic.getStereoData([mono])
 getStereoData will return both the left and right channel interleaved as a Float32Array.
 
 You can also pass in a value for mono. If you do then one of the channells will be interleaved as
@@ -139,6 +139,6 @@ And if mono is set to 'left':
 
 **Params**
 
-- mono `String` - If you'd like to get mono data interleaved as stereo data either pass 'left' or 'right'  
+- \[mono\] `String` - If you'd like to get mono data interleaved as stereo data either pass 'left' or 'right'  
 
 **Returns**: `Float32Array` - Sound data interleaved as a Float32Array.  
