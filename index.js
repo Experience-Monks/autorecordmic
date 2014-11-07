@@ -169,6 +169,7 @@ autorecordmic.prototype = {
 		if( err ) {
 
 			callback( err );
+			return;
 		}
 
 		this.context = this.mic.context,
