@@ -1,27 +1,79 @@
 <a name="module_autorecordmic"></a>
 #autorecordmic
-**Members**
 
-* [autorecordmic](#module_autorecordmic)
-  * [autorecordmic~isAvailable](#module_autorecordmic..isAvailable)
-  * [class: autorecordmic~autorecordmic](#module_autorecordmic..autorecordmic)
-    * [new autorecordmic~autorecordmic(settings, callback)](#new_module_autorecordmic..autorecordmic)
-    * [autorecordmic.mic](#module_autorecordmic..autorecordmic#mic)
-    * [autorecordmic.listen()](#module_autorecordmic..autorecordmic#listen)
-    * [autorecordmic.stop()](#module_autorecordmic..autorecordmic#stop)
-    * [autorecordmic.getChannelData()](#module_autorecordmic..autorecordmic#getChannelData)
-    * [autorecordmic.getMonoData([mono])](#module_autorecordmic..autorecordmic#getMonoData)
-    * [autorecordmic.getStereoData([mono])](#module_autorecordmic..autorecordmic#getStereoData)
+##Example:
 
+How you work with `autorecordmic` is that you first instantiate it. It begins to listen to the
+the ambient sounds in the room and it determines an average volume or activity level for the
+space. Once that sampling is finished a function will be called where you should then call `listen`.
+
+If the activity level goes above the average then recording is started and once it goes below recording
+is stopped.
+
+```javascript
+var autorecordmic = require( 'autorecordmic' );
+
+// check if this browser can support recording from the mic
+if( autorecordmic.isAvailable ) {
+
+	var mic = autorecordmic( {
+
+		// onSampleFinished will be called once an average volume
+		// for the room has been determined
+		onSampleFinished: function() {
+
+			console.log( 'sampling finished' );
+
+			// telling the mic to listen will start checking
+			// if the volume level goes above a certain level
+			// if so recording will start and the onRecordStart
+			// will be called
+			mic.listen();
+		},
+
+		// onRecordStart will be called once audio date is being recorded
+		// this happens when the volume of the mic is above the average 
+		// volume level
+		onRecordStart: function() {
+
+			console.log( 'started recording' );
+		},
+
+		// onRecordStop will be called when recording has stopped due
+		// to the rooms volume getting below the average volume
+		onRecordStop: function() {
+
+			console.log( 'stopped recording' );
+
+			// get the recorded data
+			var data = mic.getStereoData()
+
+			// do something with the recorded data
+
+			// tell the mic to listen again
+			mic.listen();
+		}
+	}, function( err ) {
+
+		if( !err ) {
+
+			console.log( 'good to go' );
+		} else {
+
+			console.log( 'oopsy error' );
+		}
+	});
+}
+```
 <a name="module_autorecordmic..isAvailable"></a>
-##autorecordmic~isAvailable
+##autorecordmic.isAvailable
 autorecordmic.isAvailable will be true when autorecordmic is able to record. In order for 
 autorecordmic to be able to record the browser must have AnalyserNode, getUserMedia and AudioContext.
 
 **Scope**: inner member of [autorecordmic](#module_autorecordmic)  
 **Type**: `Boolean`  
 <a name="module_autorecordmic..autorecordmic"></a>
-##class: autorecordmic~autorecordmic
+##class: autorecordmic
 **Members**
 
 * [class: autorecordmic~autorecordmic](#module_autorecordmic..autorecordmic)
@@ -34,7 +86,7 @@ autorecordmic to be able to record the browser must have AnalyserNode, getUserMe
   * [autorecordmic.getStereoData([mono])](#module_autorecordmic..autorecordmic#getStereoData)
 
 <a name="new_module_autorecordmic..autorecordmic"></a>
-###new autorecordmic~autorecordmic(settings, callback)
+###new autorecordmic(settings, callback)
 autorecordmic will listen to the users surrounding for a certain period
 of time and then use the average volume to determine silence.
 
@@ -60,11 +112,11 @@ When you instantiate autorecordmic you can pass the following settings:
 							// after this
 	onRecordStart: null, // This callback will be called once silence is broken and
 						 // autorecordmic begins recording data
- onRecordStop: null // This callback will be called once recording has stopped
+	onRecordStop: null // This callback will be called once recording has stopped
  				   // due to silence
 
 
- /////////////// THE FOLLOWING ARE SETTINGS FOR recordmic ///////////////
+	/////////////// THE FOLLOWING ARE SETTINGS FOR recordmic ///////////////
 	volume: 1, // this is the volume at which the mic will record by default 
 			   // this value is 1
 	bufferSize: 2048, // this is the size of the buffer as its recording. 
@@ -82,10 +134,8 @@ When you instantiate autorecordmic you can pass the following settings:
 
 - settings `Object` - Settings are described above.  
 - callback `function` - This callback will be called when the silence has been sampled
-                            and autorecordmic is ready to begin listening  
+						and autorecordmic is ready to begin listening  
 
-**Scope**: inner class of [autorecordmic](#module_autorecordmic)  
-**Returns**: `autorecordmic` - An instance of autorecordmic  
 <a name="module_autorecordmic..autorecordmic#mic"></a>
 ###autorecordmic.mic
 mic is the recordmic which will be used to record audio. Use this also to grab the recorded
