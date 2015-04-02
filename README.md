@@ -1,6 +1,8 @@
 <a name="module_autorecordmic"></a>
 #autorecordmic
 
+[![Join the chat at https://gitter.im/Jam3/autorecordmic](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Jam3/autorecordmic?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ##Example:
 
 How you work with `autorecordmic` is that you first instantiate it. It begins to listen to the
